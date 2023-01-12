@@ -14,16 +14,16 @@ import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
-import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
+import {MagicProps, RootStackParamList, RootTabParamList, RootTabScreenProps} from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 import MagicConnect from "../screens/MagicConnect";
 
-export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
+export default function Navigation({ colorScheme, magicProps }: { colorScheme: ColorSchemeName, magicProps: MagicProps }) {
   return (
     <NavigationContainer
       linking={LinkingConfiguration}
       theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <RootNavigator />
+      <RootNavigator magicProps={magicProps} />
     </NavigationContainer>
   );
 }
@@ -34,10 +34,12 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
  */
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-function RootNavigator() {
+function RootNavigator({ magicProps } : any) {
   return (
     <Stack.Navigator>
-        <Stack.Screen name="Main" component={MagicConnect} options={{ headerShown: false }} />
+        <Stack.Screen name="Main" options={{ headerShown: false }} >
+            {(props) => <MagicConnect magic={magicProps.magic} web3={magicProps.web3}/>}
+        </Stack.Screen>
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
