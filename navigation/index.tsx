@@ -18,12 +18,12 @@ import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../typ
 import LinkingConfiguration from './LinkingConfiguration';
 import MagicConnect from "../screens/MagicConnect";
 
-export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
+export default function Navigation({ colorScheme, magicProps }: { colorScheme: ColorSchemeName, magicProps: any }) {
   return (
     <NavigationContainer
       linking={LinkingConfiguration}
       theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <RootNavigator />
+      <RootNavigator magicProps={magicProps} />
     </NavigationContainer>
   );
 }
@@ -34,10 +34,12 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
  */
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-function RootNavigator() {
+function RootNavigator({ magicProps }: any) {
   return (
     <Stack.Navigator>
-        <Stack.Screen name="Main" component={MagicConnect} options={{ headerShown: false }} />
+      <Stack.Screen name="Main" options={{ headerShown: false }}>
+        {() => MagicConnect(magicProps)}
+      </Stack.Screen>
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
